@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface IEditorialRepository extends JpaRepository<Editorial,Long> {
 
-    List<Book> findEditorialByName(String name);
+    List<Editorial> findEditorialByName(String name);
 
 }

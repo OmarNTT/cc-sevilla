@@ -22,5 +22,4 @@ public class Editorial {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "editorial")
     private Set<Book> booksList;
 
-
 }

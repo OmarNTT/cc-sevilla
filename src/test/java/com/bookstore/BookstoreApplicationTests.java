@@ -4,15 +4,13 @@ import com.bookstore.Repository.IBookRepository;
 import com.bookstore.Repository.IEditorialRepository;
 import com.bookstore.model.Book;
 import com.bookstore.model.Editorial;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,17 +31,6 @@ class BookstoreApplicationTests {
     IEditorialRepository iEditorialRepository;
 
 
-    /*
-    * getAllBooks
-    * getBookById
-    * getBookByTitle
-    * getBookByEditorial
-    * addNewBook
-    * updateBookById
-    * deleteBookById
-    * */
-
-
     @BeforeEach
     public void init(){
         Book book1 = new Book(1,"TestTitle1","TestAuthor1", LocalDate.now(),11,"TestDescription1",null);
@@ -58,84 +45,159 @@ class BookstoreApplicationTests {
         iEditorialRepository.save(editorial2);
     }
 
-    @Test
-    @Order(1)
-    public void getAllBooks(){
-         List<Book> response = iBookRepository.findAll();
-         System.out.println(response);
-         assertThat(response).isNotEmpty();
+    @Nested
+    @DisplayName("Book Methods")
+    class BookMethods{
 
+        /*
+         * getAllBooks
+         * getBookById
+         * getBookByTitle
+         * getBookByEditorial
+         * addNewBook
+         * updateBookById
+         * deleteBookById
+         * */
+
+
+        @Test
+        @Order(1)
+        public void getAllBooks(){
+            List<Book> response = iBookRepository.findAll();
+            System.out.println(response);
+            assertThat(response).isNotEmpty();
+        }
+
+        @Test
+        @Order(2)
+        public void getBookById(){
+            List<Book> request = iBookRepository.findAll();
+            Long idToFound = request.get(0).getId();
+
+            Optional<Book> response = iBookRepository.findById(idToFound);
+            assertTrue(response.isPresent());
+        }
+
+        @Test
+        @Order(3)
+        public void getByTitle(){
+            List<Book> request = iBookRepository.findAll();
+            String titleToFound = request.get(0).getTitle();
+
+            List<Book> response = iBookRepository.findBookByTitle(titleToFound);
+            assertThat(response).isNotEmpty();
+        }
+
+        @Test
+        @Order(4)
+        public void getByEditorial(){
+            List<Book> request = iBookRepository.findAll();
+            Editorial editorialToFound = request.get(0).getEditorial();
+
+            List<Book> response = iBookRepository.findBookByEditorial(editorialToFound);
+            assertThat(response).isNotEmpty();
+        }
+
+        @Test
+        @Order(5)
+        public void addNewBook(){
+
+            Book book = new Book("TestTitle3","TestAuthor3", LocalDate.now(),13,"TestDescription3",null);
+            int sizeBeforeInsert = iBookRepository.findAll().size();
+            iBookRepository.save(book);
+            int sizeAfterInsert = iBookRepository.findAll().size();
+
+            assertEquals(sizeBeforeInsert,sizeAfterInsert-1);
+
+        }
+
+        @Test
+        @Order(5)
+        public void deleteBookById(){
+
+            Book bookToDelete = iBookRepository.findAll().get(0);
+            int sizeBeforeDeleted = iBookRepository.findAll().size();
+            iBookRepository.deleteById(bookToDelete.getId());
+            int sizeAfterDeleted = iBookRepository.findAll().size();
+            assertEquals(sizeBeforeDeleted,sizeAfterDeleted+1);
+        }
+
+        @Test
+        @Order(6)
+        public void updateBookById(){
+
+            Book bookToUpdate = iBookRepository.findAll().get(0);
+            String titleBeforeUpdate = bookToUpdate.getTitle();
+            bookToUpdate.setTitle("NewTitleOfBook");
+
+            Book bookUpdated = iBookRepository.save(bookToUpdate);
+            String titleAfterUpdate = bookUpdated.getTitle();
+            assertNotEquals(titleBeforeUpdate,titleAfterUpdate);
+
+        }
     }
 
-    @Test
-    @Order(2)
-    public void getBookById(){
-        List<Book> request = iBookRepository.findAll();
-        Long idToFound = request.get(0).getId();
 
-        Optional<Book> response = iBookRepository.findById(idToFound);
-        assertTrue(response.isPresent());
-    }
+    @Nested
+    @DisplayName("Editorial Methods")
+    class EditorialMethods{
 
-    @Test
-    @Order(3)
-    public void getByTitle(){
-        List<Book> request = iBookRepository.findAll();
-        String titleToFound = request.get(0).getTitle();
+        @Test
+        public void addNewEditorial() {
+            Editorial newEditorial = new Editorial();
+            newEditorial.setName("Cerbero");
+            int sizeBeforeSave = iEditorialRepository.findAll().size();
+            iEditorialRepository.save(newEditorial);
+            int sizeAfterSave = iEditorialRepository.findAll().size();
+            assertEquals(sizeAfterSave-1, sizeBeforeSave);
+        }
 
-        List<Book> response = iBookRepository.findBookByTitle(titleToFound);
-        assertThat(response).isNotEmpty();
-    }
+        @Test
+        public void deleteEditorialById() {
+            long id = iEditorialRepository.findAll().get(0).getId();
+            int sizeBeforeSave = iEditorialRepository.findAll().size();
+            iEditorialRepository.deleteById(id);
+            int sizeAfterSave = iEditorialRepository.findAll().size();
 
-    @Test
-    @Order(4)
-    public void getByEditorial(){
-        List<Book> request = iBookRepository.findAll();
-        Editorial editorialToFound = request.get(0).getEditorial();
+            assertEquals(sizeAfterSave+1, sizeBeforeSave);
+        }
 
-        List<Book> response = iBookRepository.findBookByEditorial(editorialToFound);
-        assertThat(response).isNotEmpty();
-    }
+        @Test
+        public void getAllEditorials() {
+            List<Editorial> allEditorials = iEditorialRepository.findAll();
+            assertThat(allEditorials).isNotEmpty();
+        }
 
-    @Test
-    @Order(5)
-    public void addNewBook(){
+        @Test
+        public void getEditorialById() {
+            long id = iEditorialRepository.findAll().get(0).getId();
+            Optional<Editorial> optEditorial = iEditorialRepository.findById(id);
+            assertTrue(optEditorial.isPresent());
+            optEditorial.ifPresent(
+                    (editorial)->assertEquals(id, editorial.getId())
+            );
+        }
 
-        Book book = new Book("TestTitle3","TestAuthor3", LocalDate.now(),13,"TestDescription3",null);
-        int sizeBeforeInsert = iBookRepository.findAll().size();
-        iBookRepository.save(book);
-        int sizeAfterInsert = iBookRepository.findAll().size();
+        @Test
+        public void getEditorialByName() {
+            String name = iEditorialRepository.findAll().get(0).getName();
+            List<Editorial> editorials = iEditorialRepository.findEditorialByName(name);
+            assertThat(editorials).isNotEmpty();
+        }
 
-        assertEquals(sizeBeforeInsert,sizeAfterInsert-1);
+        @Test
+        public void updateEditorial() {
+            Editorial editorial = iEditorialRepository.findAll().get(0);
+            String oldName = editorial.getName();
+            String newName = "NewEditorialName";
+            editorial.setName(newName);
+            Editorial updatedEditorial = iEditorialRepository.save(editorial);
 
-    }
-
-    @Test
-    @Order(5)
-    public void deleteBookById(){
-
-        Book bookToDelete = iBookRepository.findAll().get(0);
-        int sizeBeforeDeleted = iBookRepository.findAll().size();
-        iBookRepository.deleteById(bookToDelete.getId());
-        int sizeAfterDeleted = iBookRepository.findAll().size();
-        assertEquals(sizeBeforeDeleted,sizeAfterDeleted+1);
-    }
-
-    @Test
-    @Order(6)
-    public void updateBookById(){
-
-        Book bookToUpdate = iBookRepository.findAll().get(0);
-        String titleBeforeUpdate = bookToUpdate.getTitle();
-        bookToUpdate.setTitle("NewTitleOfBook");
-
-        Book bookUpdated = iBookRepository.save(bookToUpdate);
-        String titleAfterUpdate = bookUpdated.getTitle();
-        assertNotEquals(titleBeforeUpdate,titleAfterUpdate);
+            assertNotEquals(updatedEditorial.getName(), oldName);
+            assertEquals(updatedEditorial.getName(), newName);
+        }
 
     }
-
-
 
 
 }

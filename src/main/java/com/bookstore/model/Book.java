@@ -31,7 +31,6 @@ public class Book {
     @Column(name="Descripcion")
     private String description;
 
-
     @ManyToOne
     @JoinColumn(name = "editorial_id", nullable = true, updatable = false)
     private Editorial editorial;
