@@ -1,25 +1,27 @@
 package com.bookstore.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name="Editorials")
+@Table(name="editorial")
 public class Editorial {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator="editorial_seq")
     private long id;
 
     @Column(name="Name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "editorial")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "editorial",fetch = FetchType.LAZY)
     private Set<Book> booksList;
 
 }

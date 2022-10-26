@@ -1,5 +1,8 @@
 package com.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 
@@ -7,9 +10,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 
-@Data @AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 @Entity
-@Table(name="Books")
+@Table(name="book")
 public class Book {
 
     @Id
@@ -31,8 +35,9 @@ public class Book {
     @Column(name="Descripcion")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "editorial_id", nullable = true, updatable = false)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @JoinColumn(name = "editorial_id",nullable = false, referencedColumnName = "id")
     private Editorial editorial;
 
     public Book(String title, String author, LocalDate publishDate, int pages, String description, Editorial editorial) {
@@ -43,4 +48,6 @@ public class Book {
         this.description = description;
         this.editorial = editorial;
     }
+
+
 }
