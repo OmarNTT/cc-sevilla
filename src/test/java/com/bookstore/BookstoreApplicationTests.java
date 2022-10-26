@@ -21,6 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 
 
+//Ejecutar con H2 Database
+
 @DataJpaTest
 class BookstoreApplicationTests {
 
@@ -33,8 +35,8 @@ class BookstoreApplicationTests {
 
     @BeforeEach
     public void init(){
-        Book book1 = new Book(1,"TestTitle1","TestAuthor1", LocalDate.now(),11,"TestDescription1",null);
-        Book book2 = new Book(2,"TestTitle2","TestAuthor2", LocalDate.now(),12,"TestDescription2",null);
+        Book book1 = new Book(1,"TestTitle1","TestAuthor1", LocalDate.now(),11,"TestDescription1","CustomTitle1",null);
+        Book book2 = new Book(2,"TestTitle2","TestAuthor2", LocalDate.now(),12,"TestDescription2","CustomTitle2",null);
 
         Editorial editorial1 = new Editorial(1,"Editorial1", Set.of(book1));
         Editorial editorial2 = new Editorial(2,"Editorial2",Set.of(book2));

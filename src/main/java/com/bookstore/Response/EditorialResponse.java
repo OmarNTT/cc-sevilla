@@ -5,11 +5,14 @@ import com.bookstore.model.Editorial;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter @Setter
 public class EditorialResponse {
 
     @JsonProperty("Editorial_Id")

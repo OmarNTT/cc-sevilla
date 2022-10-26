@@ -36,6 +36,9 @@ public class Book {
     @Column(name="Descripcion")
     private String description;
 
+    @Transient
+    private String customizedTitle;
+
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "editorial_id",nullable = false, referencedColumnName = "id")
     private Editorial editorial;
