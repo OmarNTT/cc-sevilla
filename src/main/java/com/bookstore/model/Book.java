@@ -1,5 +1,6 @@
 package com.bookstore.model;
 
+import com.bookstore.Response.BookResponse;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
@@ -35,7 +36,6 @@ public class Book {
     @Column(name="Descripcion")
     private String description;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "editorial_id",nullable = false, referencedColumnName = "id")
     private Editorial editorial;
@@ -48,6 +48,8 @@ public class Book {
         this.description = description;
         this.editorial = editorial;
     }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class Editorial {
     @Column(name="Name")
     private String name;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "editorial",fetch = FetchType.LAZY)
     private Set<Book> booksList;
 
