@@ -8,11 +8,14 @@ import com.bookstore.model.Editorial;
 import com.bookstore.service.BookService;
 import com.bookstore.service.EditorialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -139,11 +142,30 @@ public class BookController {
         Link selfLink = linkTo(BookController.class).slash(id).withSelfRel();
         int editorialId = (int) book.getEditorialResponse().getId();
         Link editorialLink = linkTo(methodOn(EditorialController.class)
-                .getEditorialById(editorialId)).withRel("editorialRef");
+                .getEditorialById(editorialId)).withRel("editorial");
         book.add(selfLink);
+        book.add(editorialLink);
         EditorialResponse e = book.getEditorialResponse();
-        e.add(editorialLink);
     }
+
+    public void addLinksToBookV2(BookResponse book){
+        long id = book.getId();
+        Link selfLink = linkTo(BookController.class).slash(id).withRel("book");
+        int editorialId = (int) book.getEditorialResponse().getId();
+        Link editorialLink = linkTo(methodOn(EditorialController.class)
+                .getEditorialById(editorialId)).withRel("editorial");
+        List<Link> links = new ArrayList<>();
+        links.add(selfLink);
+        links.add(editorialLink);
+
+        EntityModel<BookResponse> entityModel = EntityModel.of(book);
+        entityModel.add(links);
+
+
+        book.add(links);
+        EditorialResponse e = book.getEditorialResponse();
+    }
+
     public List<BookResponse> addLinksToBookList(List<BookResponse> books){
         for(BookResponse book: books) {
             this.addLinksToBook(book);

@@ -2,9 +2,12 @@ package com.bookstore.Response;
 
 
 import com.bookstore.model.Book;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 
@@ -12,7 +15,7 @@ import java.time.LocalDate;
 
 
 
-@Getter @Setter
+@Getter @Setter @Data
 public class BookResponse extends RepresentationModel<BookResponse> {
 
     @JsonProperty("Book_Id")
@@ -27,6 +30,8 @@ public class BookResponse extends RepresentationModel<BookResponse> {
     private int pages;
     @JsonProperty("Book_Description")
     private String description;
+
+
 
     //@JsonProperty("Book_NameWithTitle")
     //private String customizedTitle;

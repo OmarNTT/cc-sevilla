@@ -72,8 +72,11 @@ public class EditorialController {
     }
 
     public void addLinksToEditorial(EditorialResponse editorial){
-        editorial.add(linkTo(methodOn(EditorialController.class).getEditorialById((int) editorial.getId())).withSelfRel());
-        editorial.getBooksList().stream().forEach(book->book.add(linkTo(methodOn(BookController.class).getBookById((int) book.getId())).withSelfRel()));
+        editorial.add(linkTo(methodOn(EditorialController.class)
+                .getEditorialById((int) editorial.getId())).withSelfRel());
+        editorial.getBooksList().stream()
+                .forEach(book->book.add(linkTo(methodOn(BookController.class)
+                        .getBookById((int) book.getId())).withSelfRel()));
     }
 
 
