@@ -7,19 +7,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter @Setter
-public class EditorialResponse {
+public class EditorialResponse extends RepresentationModel<EditorialResponse> {
 
     @JsonProperty("Editorial_Id")
     private long id;
     @JsonProperty("Editorial_Name")
     private String name;
     @JsonProperty("Editorial_Books")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<BookResponse> booksList;
 
     public EditorialResponse(Editorial editorial) {

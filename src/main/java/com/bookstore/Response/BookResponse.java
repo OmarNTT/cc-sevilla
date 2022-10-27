@@ -5,12 +5,15 @@ import com.bookstore.model.Book;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 
 import java.time.LocalDate;
 
+
+
 @Getter @Setter
-public class BookResponse {
+public class BookResponse extends RepresentationModel<BookResponse> {
 
     @JsonProperty("Book_Id")
     private long id;

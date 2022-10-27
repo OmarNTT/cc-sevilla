@@ -7,14 +7,15 @@ import com.bookstore.model.Book;
 import com.bookstore.model.Editorial;
 import com.bookstore.service.BookService;
 import com.bookstore.service.EditorialService;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/bookstore/book")
@@ -31,6 +32,7 @@ public class BookController {
     public ResponseEntity<List<BookResponse>> getAllBooks(){
         try{
             List<BookResponse> books = bookService.getAllBooks();
+            addLinksToBookList(books);
             if(books.size() == 0){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -46,6 +48,7 @@ public class BookController {
     public ResponseEntity<BookResponse> getBookById(@PathVariable long id){
         try{
             BookResponse book = bookService.getBookById(id).get();
+            addLinksToBook(book);
             if(book == null){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -62,6 +65,7 @@ public class BookController {
     public ResponseEntity<BookResponse> addBook(@RequestBody Book book){
        try{
               BookResponse bookResponse = bookService.addNewBook(book);
+              addLinksToBook(bookResponse);
               if(bookResponse == null){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
               }
@@ -77,6 +81,7 @@ public class BookController {
     public ResponseEntity<BookResponse> updateBook(@PathVariable long id, @RequestBody Book book){
         try{
             BookResponse bookResponse = bookService.updateBookById(id, book);
+            addLinksToBook(bookResponse);
             if(bookResponse == null){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -98,6 +103,7 @@ public class BookController {
     public ResponseEntity<List<BookResponse>> getBookByTitle(@RequestParam String value){
         try{
             List<BookResponse> books = bookService.getBookByTitle(value);
+            addLinksToBookList(books);
             if(books == null || books.size() == 0){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -116,6 +122,7 @@ public class BookController {
             Editorial editorial = new Editorial();
             editorial.setId(editorialToFind.getId());
             List<BookResponse> books = bookService.getBookByEditorial(editorial);
+            addLinksToBookList(books);
             if(books == null || books.size() == 0){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -125,6 +132,23 @@ public class BookController {
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public void addLinksToBook(BookResponse book){
+        long id = book.getId();
+        Link selfLink = linkTo(BookController.class).slash(id).withSelfRel();
+        int editorialId = (int) book.getEditorialResponse().getId();
+        Link editorialLink = linkTo(methodOn(EditorialController.class)
+                .getEditorialById(editorialId)).withRel("editorialRef");
+        book.add(selfLink);
+        EditorialResponse e = book.getEditorialResponse();
+        e.add(editorialLink);
+    }
+    public List<BookResponse> addLinksToBookList(List<BookResponse> books){
+        for(BookResponse book: books) {
+            this.addLinksToBook(book);
+        }
+        return books;
     }
 
 
