@@ -1,24 +1,25 @@
 package com.bookstore.controller;
 
 
-import com.bookstore.Repository.IBookRepository;
 import com.bookstore.Response.BookResponse;
 import com.bookstore.Response.EditorialResponse;
 import com.bookstore.model.Book;
 import com.bookstore.model.Editorial;
 import com.bookstore.service.BookService;
 import com.bookstore.service.EditorialService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bookstore/book")
 public class BookController {
+
 
     @Autowired
     BookService bookService;
@@ -52,6 +53,7 @@ public class BookController {
                     new ResponseEntity<BookResponse>(book, HttpStatus.OK);
             return response;
         }catch(Exception e){
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

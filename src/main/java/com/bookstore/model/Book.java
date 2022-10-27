@@ -11,10 +11,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 
-@AllArgsConstructor @NoArgsConstructor
-@Getter @Setter
 @Entity
+@Getter @Setter
 @Table(name="book")
+@AllArgsConstructor @NoArgsConstructor
 public class Book {
 
     @Id
@@ -36,8 +36,8 @@ public class Book {
     @Column(name="Descripcion")
     private String description;
 
-    @Transient
-    private String customizedTitle;
+    //@Transient
+    //private String customizedTitle;
 
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name = "editorial_id",nullable = false, referencedColumnName = "id")
@@ -51,8 +51,5 @@ public class Book {
         this.description = description;
         this.editorial = editorial;
     }
-
-
-
 
 }

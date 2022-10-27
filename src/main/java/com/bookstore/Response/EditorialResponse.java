@@ -25,9 +25,11 @@ public class EditorialResponse {
     public EditorialResponse(Editorial editorial) {
         this.id = editorial.getId();
         this.name = editorial.getName();
+        if(editorial.getBooksList()!=null){
         this.booksList = editorial.getBooksList().stream().map(book->{
             return new BookResponse(book);
         }).collect(Collectors.toSet());
+        }
     }
 
     public EditorialResponse(long id,String name){

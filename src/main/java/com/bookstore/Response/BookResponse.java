@@ -24,8 +24,9 @@ public class BookResponse {
     private int pages;
     @JsonProperty("Book_Description")
     private String description;
-    @JsonProperty("Book_NameWithTitle")
-    private String customizedTitle;
+
+    //@JsonProperty("Book_NameWithTitle")
+    //private String customizedTitle;
     @JsonProperty("Book_Editorial")
     private EditorialResponse editorialResponse;
 
@@ -36,7 +37,7 @@ public class BookResponse {
         this.publishDate = book.getPublishDate();
         this.pages = book.getPages();
         this.description = book.getDescription();
-        this.customizedTitle = book.getTitle() + " by " + book.getAuthor();
+        //this.customizedTitle = book.getTitle() + " by " + book.getAuthor();
         this.editorialResponse = new EditorialResponse(book.getEditorial().getId(),book.getEditorial().getName());
     }
 

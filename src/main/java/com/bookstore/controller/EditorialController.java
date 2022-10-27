@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.bookstore.Repository.IBookRepository;
-import com.bookstore.Repository.IEditorialRepository;
-import com.bookstore.model.Book;
 import com.bookstore.model.Editorial;
 import com.bookstore.service.EditorialService;
 
@@ -52,8 +50,6 @@ public class EditorialController {
         this.editorialService.deleteEditorialById(id);
         return "Editorial deleted sucessfully";
     }
-
-
 
 
 
