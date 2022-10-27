@@ -1,12 +1,10 @@
 package com.bookstore.controller;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import com.bookstore.Response.BookResponse;
 import com.bookstore.Response.EditorialResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import com.bookstore.Repository.IBookRepository;
@@ -74,9 +72,10 @@ public class EditorialController {
     public void addLinksToEditorial(EditorialResponse editorial){
         editorial.add(linkTo(methodOn(EditorialController.class)
                 .getEditorialById((int) editorial.getId())).withSelfRel());
+        AtomicInteger number = new AtomicInteger(0);
         editorial.getBooksList().stream()
-                .forEach(book->book.add(linkTo(methodOn(BookController.class)
-                        .getBookById((int) book.getId())).withSelfRel()));
+                .forEach(book->editorial.add(linkTo(methodOn(BookController.class)
+                        .getBookById((int) book.getId())).withRel("BookTitle("+book.getTitle()+")")));
     }
 
 
