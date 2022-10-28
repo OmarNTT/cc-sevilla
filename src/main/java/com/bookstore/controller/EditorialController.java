@@ -72,7 +72,6 @@ public class EditorialController {
     public void addLinksToEditorial(EditorialResponse editorial){
         editorial.add(linkTo(methodOn(EditorialController.class)
                 .getEditorialById((int) editorial.getId())).withSelfRel());
-        AtomicInteger number = new AtomicInteger(0);
         editorial.getBooksList().stream()
                 .forEach(book->editorial.add(linkTo(methodOn(BookController.class)
                         .getBookById((int) book.getId())).withRel("BookTitle("+book.getTitle()+")")));
