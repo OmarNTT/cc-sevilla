@@ -19,13 +19,13 @@ public class BookRegistryService implements IBookRegistryService {
 
     public List<BookRegistryResponse> getAllBookRegistry(){
         return iBookRegistryRepository.findAll().stream()
-                .map((bookRegistry)->new BookRegistryResponse(bookRegistry))
+                .map(BookRegistryResponse::new)
                 .collect(Collectors.toList());
     }
 
     public List<BookRegistryResponse> getBookRegistryById(String id) {
         return iBookRegistryRepository.findById(id).stream()
-                .map((bookRegistry)->new BookRegistryResponse(bookRegistry))
+                .map(BookRegistryResponse::new)
                 .collect(Collectors.toList());
     }
 
