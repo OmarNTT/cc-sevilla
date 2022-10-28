@@ -1,7 +1,6 @@
 package com.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +17,7 @@ public class Editorial {
     @GeneratedValue(strategy = GenerationType.IDENTITY,generator="editorial_seq")
     private long id;
 
-    @Column(name="Name")
+    @Column(name="ed_name")
     private String name;
 
     @JsonIgnore

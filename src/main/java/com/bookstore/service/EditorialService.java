@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.bookstore.Response.EditorialResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bookstore.Repository.IEditorialRepository;
 import com.bookstore.model.Editorial;
+import com.bookstore.repository.IEditorialRepository;
+import com.bookstore.response.EditorialResponse;
 
 @Service
 public class EditorialService {
@@ -23,10 +23,8 @@ public class EditorialService {
                 .collect(Collectors.toList());
     }
 
-    public List<EditorialResponse> getEditorialById(long id) {
-        return this.editorialRepo.findById(id).stream()
-                .map((editorial)->new EditorialResponse(editorial))
-                .collect(Collectors.toList());
+    public Optional<Editorial> getEditorialById(long id) {
+        return this.editorialRepo.findById(id);
     }
 
     public List<EditorialResponse> getEditorialByName(String name) {

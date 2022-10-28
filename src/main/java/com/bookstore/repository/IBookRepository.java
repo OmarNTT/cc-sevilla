@@ -1,4 +1,4 @@
-package com.bookstore.Repository;
+package com.bookstore.repository;
 
 import com.bookstore.model.Book;
 import com.bookstore.model.Editorial;
@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface IEditorialRepository extends JpaRepository<Editorial,Long> {
 
-    List<Editorial> findEditorialByName(String name);
+@Repository
+public interface IBookRepository extends JpaRepository<Book,Long> {
+
+    List<Book> findBookByTitle(String title);
+    List<Book> findBookByEditorial(Editorial editorial);
 
 }

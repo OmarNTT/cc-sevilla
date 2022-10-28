@@ -1,9 +1,10 @@
 package com.bookstore;
 
-import com.bookstore.Repository.IBookRepository;
-import com.bookstore.Repository.IEditorialRepository;
 import com.bookstore.model.Book;
 import com.bookstore.model.Editorial;
+import com.bookstore.repository.IBookRepository;
+import com.bookstore.repository.IEditorialRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

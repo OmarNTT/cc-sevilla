@@ -1,21 +1,21 @@
-package com.bookstore.Response;
-
+package com.bookstore.response;
 
 import com.bookstore.model.Book;
-import com.bookstore.model.Editorial;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.RepresentationModel;
+
 import java.time.LocalDate;
 
-@Getter @Setter
-public class BookResponse {
+@Getter @Setter @ToString @EqualsAndHashCode
+public class BookResponse extends RepresentationModel<BookResponse>{
 
     @JsonProperty("Book_Id")
     private long id;
@@ -41,5 +41,13 @@ public class BookResponse {
         this.description = book.getDescription();
         this.editorialResponse = new EditorialResponse(book.getEditorial().getId(),book.getEditorial().getName());
     }
-
+    
+    @JsonProperty("links")
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	@Override
+	public Links getLinks() {
+		return super.getLinks();
+	}
+    
 }
+

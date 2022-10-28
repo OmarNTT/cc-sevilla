@@ -1,9 +1,5 @@
 package com.bookstore.model;
 
-import com.bookstore.Response.BookResponse;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 
@@ -12,7 +8,7 @@ import java.time.LocalDate;
 
 
 @AllArgsConstructor @NoArgsConstructor
-@Getter @Setter
+@Getter @Setter @ToString
 @Entity
 @Table(name="book")
 public class Book {
@@ -30,7 +26,7 @@ public class Book {
     @Column(name="Publish")
     private LocalDate publishDate;
 
-    @Column(name="Page")
+    @Column(name="num_pages")
     private int pages;
 
     @Column(name="Descripcion")

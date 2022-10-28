@@ -15,11 +15,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import com.bookstore.service.BookService;
+
 
 @WebMvcTest
 public class BookstoreIntegracionTests {
     @Autowired
     private TestRestTemplate template;
+    
     private String baseUrl = "http://localhost:8081/bookstore";
     private final int OK = 200;
     private final int CREATED = 201;
