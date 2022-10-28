@@ -2,7 +2,7 @@ package com.bookstore;
 
 
 import com.bookstore.controller.BookController;
-import com.bookstore.service.BookService;
+import com.bookstore.service.implemented.BookService;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

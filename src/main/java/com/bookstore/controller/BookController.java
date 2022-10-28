@@ -5,8 +5,8 @@ import com.bookstore.Response.BookResponse;
 import com.bookstore.Response.EditorialResponse;
 import com.bookstore.model.Book;
 import com.bookstore.model.Editorial;
-import com.bookstore.service.BookService;
-import com.bookstore.service.EditorialService;
+import com.bookstore.service.implemented.BookService;
+import com.bookstore.service.implemented.EditorialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -26,10 +25,10 @@ public class BookController {
 
 
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @Autowired
-    EditorialService editorialService;
+    private EditorialService editorialService;
 
     @GetMapping("")
     public ResponseEntity<List<BookResponse>> getAllBooks(){

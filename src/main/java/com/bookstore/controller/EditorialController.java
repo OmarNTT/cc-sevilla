@@ -1,15 +1,13 @@
 package com.bookstore.controller;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.bookstore.Response.EditorialResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.bookstore.Repository.IBookRepository;
 import com.bookstore.model.Editorial;
-import com.bookstore.service.EditorialService;
+import com.bookstore.service.implemented.EditorialService;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -19,10 +17,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class EditorialController {
 
     @Autowired
-    EditorialService editorialService;
+    private EditorialService editorialService;
 
-    @Autowired
-    IBookRepository br;
 
     @GetMapping("")
     public List<EditorialResponse> getAllEditorials(){
