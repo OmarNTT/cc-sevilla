@@ -19,7 +19,7 @@ public class BookstoreApplication{
     @Bean
     CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate) {
     	return args->{
-    		kafkaTemplate.send("kafka_test_topic", "Hello topic");
+    		kafkaTemplate.send("book_registry", "Hello topic :)");
     	};
     }
 

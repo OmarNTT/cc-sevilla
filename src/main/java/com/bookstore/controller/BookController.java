@@ -12,6 +12,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -28,7 +29,9 @@ public class BookController {
 	BookService bookService;
 	
 	@Autowired
-	BookRegistryService registryService;
+	//BookRegistryService registryService;
+	KafkaTemplate<String, String> kafkaTemplate;
+	private final String TOPIC = "book_registry";
 
 	@Autowired
 	EditorialService editorialService;
@@ -41,6 +44,9 @@ public class BookController {
 		}
 		addLinksToList(bookList);
 		ResponseEntity<List<BookResponse>> response = new ResponseEntity<List<BookResponse>>(bookList, HttpStatus.OK);
+		
+		kafkaTemplate.send(TOPIC, "All books have been requested");
+		
 		return response;
 	}
 
@@ -52,15 +58,18 @@ public class BookController {
 		}
 		BookResponse book = opt.get();
 		addLinksToBook(book);
+		
+		kafkaTemplate.send(TOPIC, "Book with id "+id+" has been requested");
+		
 		return new ResponseEntity<BookResponse>(book, HttpStatus.OK);
 	}
 
 	@PostMapping("")
 	public ResponseEntity<BookResponse> addBook(@RequestBody Book book){
 		BookResponse newBook = bookService.addNewBook(book);
-		//BookRegistry registry = new BookRegistry(null, "New book added with id "+newBook.getId(), LocalDate.now());
-		//this.registryService.addRegistry(registry);
-		this.registryService.addRegistry(HttpMethod.POST, newBook.getId());
+		
+		kafkaTemplate.send("kafka_test_topic", "New Book added with id "+newBook.getId());
+		
 		return new ResponseEntity<BookResponse>(newBook, HttpStatus.OK);
 	}
 
@@ -68,7 +77,7 @@ public class BookController {
 	public ResponseEntity<BookResponse> updateBook(@PathVariable long id, @RequestBody Book book){
 		BookResponse updatedBook = bookService.updateBookById(id, book);
 		
-		this.registryService.addRegistry(HttpMethod.PUT, updatedBook.getId());
+		kafkaTemplate.send(TOPIC, "Book with id "+id+" has been updated");
 		
 		return new ResponseEntity<BookResponse>(updatedBook, HttpStatus.OK);
 	}
@@ -76,7 +85,7 @@ public class BookController {
 	@DeleteMapping("/{id}")
 	public String deleteBook(@PathVariable long id){
 		bookService.deleteBookById(id);
-		this.registryService.addRegistry(HttpMethod.DELETE, id);
+		kafkaTemplate.send(TOPIC, "Book with id "+id+" has been deleted");
 		return "Book deleted sucessfully";
 	}
 
