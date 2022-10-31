@@ -2,9 +2,7 @@ package com.bookstore.service;
 
 
 import com.bookstore.model.Book;
-import com.bookstore.model.BookRegistry;
 import com.bookstore.model.Editorial;
-import com.bookstore.repository.IBookRegistryRepository;
 import com.bookstore.repository.IBookRepository;
 import com.bookstore.repository.IEditorialRepository;
 import com.bookstore.response.BookResponse;
@@ -12,7 +10,6 @@ import com.bookstore.response.BookResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

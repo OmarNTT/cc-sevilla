@@ -49,5 +49,7 @@ public class BookResponse extends RepresentationModel<BookResponse>{
 		return super.getLinks();
 	}
     
+    
+    
 }
 
