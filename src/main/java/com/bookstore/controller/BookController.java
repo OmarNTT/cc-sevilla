@@ -97,6 +97,7 @@ public class BookController {
 		}
 		addLinksToList(bookList);
 		ResponseEntity<List<BookResponse>> response = new ResponseEntity<List<BookResponse>>(bookList, HttpStatus.OK);
+		kafkaTemplate.send(TOPIC, "All Books with title ("+value+") has been requested");
 		return response;
 	}
 
@@ -114,6 +115,7 @@ public class BookController {
 		}
 		addLinksToList(bookList);
 		ResponseEntity<List<BookResponse>> response = new ResponseEntity<List<BookResponse>>(bookList, HttpStatus.OK);
+		kafkaTemplate.send(TOPIC, "All Books with given editorialId ("+id+") has been requested");
 		return response;
 	}
 
