@@ -12,7 +12,7 @@ public class KafkaConfig {
     @Bean
     public NewTopic bookstoreTopic() {
         return TopicBuilder
-                .name("bookstore")
+                .name("bookstore_registry")
                 .build();
     }
 

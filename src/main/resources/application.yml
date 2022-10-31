@@ -1,4 +1,7 @@
 spring:
+  mongodb:
+    embedded:
+      version: 4.0.12
   kafka:
     bootstrap-servers: localhost:9092
   datasource:

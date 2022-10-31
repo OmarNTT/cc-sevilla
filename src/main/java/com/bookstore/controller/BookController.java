@@ -14,6 +14,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,17 +27,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/bookstore/book")
 public class BookController {
 
+    public final String Topic = "bookstore_registry";
 
     @Autowired
     private BookService bookService;
-    @Autowired
-    private BookRegistryService bookRegistryService;
+
     @Autowired
     private EditorialService editorialService;
+    @Autowired
+    KafkaTemplate<String,String> kafkaTemplate;
 
     @GetMapping("")
     public ResponseEntity<List<BookResponse>> getAllBooks(){
-        Logger("Fetched get all books");
         try{
             List<BookResponse> books = bookService.getAllBooks();
             addLinksToBookList(books);
@@ -45,6 +47,7 @@ public class BookController {
             }
             ResponseEntity<List<BookResponse>> response =
                     new ResponseEntity<List<BookResponse>>(books, HttpStatus.OK);
+            kafkaTemplate.send(this.Topic,"Fetched get all books");
             return response;
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,7 +56,7 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookResponse> getBookById(@PathVariable long id){
-        Logger("Fetched get books by id with id: " + id);
+        kafkaTemplate.send(this.Topic,"Fetched get books by id with id: " + id);
         try{
             BookResponse book = bookService.getBookById(id).get();
             addLinksToBook(book);
@@ -71,7 +74,7 @@ public class BookController {
 
     @PostMapping("")
     public ResponseEntity<BookResponse> addBook(@RequestBody Book book){
-        Logger("Fetched add new book");
+        kafkaTemplate.send(this.Topic,"Fetched add new book");
        try{
               BookResponse bookResponse = bookService.addNewBook(book);
               addLinksToBook(bookResponse);
@@ -88,7 +91,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<BookResponse> updateBook(@PathVariable long id, @RequestBody Book book){
-        Logger("Fetched update book with id: " + id);
+        kafkaTemplate.send(this.Topic,"Fetched update book with id: " + id);
         try{
             BookResponse bookResponse = bookService.updateBookById(id, book);
             addLinksToBook(bookResponse);
@@ -105,14 +108,14 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public String deleteBook(@PathVariable long id){
-        Logger("Fetched delete book with id: " + id);
+        kafkaTemplate.send(this.Topic,"Fetched delete book with id: " + id);
         bookService.deleteBookById(id);
         return "Book deleted sucessfully";
     }
 
     @GetMapping("/title")
     public ResponseEntity<List<BookResponse>> getBookByTitle(@RequestParam String value){
-        Logger("Fetched get books by title with value: " + value);
+        kafkaTemplate.send(this.Topic,"Fetched get books by title with value: " + value);
         try{
             List<BookResponse> books = bookService.getBookByTitle(value);
             addLinksToBookList(books);
@@ -129,7 +132,7 @@ public class BookController {
 
     @GetMapping("/searchbyeditorialid/{id}")
     public ResponseEntity<List<BookResponse>> getBookByEditorial(@PathVariable int id){
-        Logger("Fetched get books by editorial with id: " + id);
+        kafkaTemplate.send(this.Topic,"Fetched get books by editorial with id: " + id);
         try{
             EditorialResponse editorialToFind = editorialService.getEditorialById(id).get(0);
             Editorial editorial = new Editorial();
@@ -165,12 +168,13 @@ public class BookController {
         return books;
     }
 
+    /*
     public void Logger(String message){
         Date fetchedDate = new Date();
         BookRegistry bookRegistry = new BookRegistry(message, fetchedDate);
         bookRegistryService.postBookRegistry(bookRegistry);
     }
-
+    */
 
 
 }
