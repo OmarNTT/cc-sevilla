@@ -2,6 +2,8 @@ package com.bookstore.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
@@ -23,5 +25,10 @@ public class BookRegistry {
 	private String id;
 	private String message;
 	private LocalDate date;
+	
+	public BookRegistry(String msg, LocalDate date) {
+		this.message = msg; 
+		this.date = date;
+	}
 }
 

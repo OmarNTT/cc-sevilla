@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.bookstore.model.BookRegistry;
 
 @Repository
-public interface IBookRegistryRepository extends MongoRepository<BookRegistry, Long>{
+public interface IBookRegistryRepository extends MongoRepository<BookRegistry, String>{
 
 }

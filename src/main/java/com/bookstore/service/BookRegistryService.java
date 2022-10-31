@@ -1,11 +1,13 @@
 package com.bookstore.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.bookstore.model.BookRegistry;
 import com.bookstore.repository.IBookRegistryRepository;
@@ -13,21 +15,54 @@ import com.bookstore.response.BookRegistryResponse;
 
 @Service
 public class BookRegistryService {
-	
+
 	@Autowired
 	IBookRegistryRepository registryRepo;
-	
+
 	public List<BookRegistryResponse> getAllRegistries(){
 		return registryRepo.findAll().stream()
 				.map(reg->new BookRegistryResponse(reg))
 				.collect(Collectors.toList());
 	}
 	
-	public BookRegistryResponse addRegistry(@RequestBody BookRegistry registry){
+	public Optional<BookRegistryResponse> getBookRegistryById(String id){
+		Optional<BookRegistry> book = registryRepo.findById(id);
+		if(book.isPresent()){
+			return Optional.of(new BookRegistryResponse(book.get()));
+		}
+		return Optional.empty();
+	}
+
+	public BookRegistryResponse addRegistry(BookRegistry registry){
 		return new BookRegistryResponse(this.registryRepo.save(registry));
 	}
 	
-	public void deleteRegistry(long id){
-		this.registryRepo.deleteById(id);;
+	public BookRegistryResponse updateBookRegistryById(String id,BookRegistry registry){
+		Optional<BookRegistry> opt = this.registryRepo.findById(id);
+		if(opt.isEmpty())
+			return null;
+		
+		registry.setId(id);
+		return new BookRegistryResponse(this.registryRepo.save(registry));
+	}
+
+	public void deleteRegistry(String id){
+		this.registryRepo.deleteById(id);
+	}
+
+	public void addRegistry(HttpMethod method, long id) {
+		String msg;
+		switch(method) {
+		case DELETE: 
+			msg = "Book with id " + id + " deleted succesfully"; break;
+		case POST: 
+			msg = "New book added with id "+id; break;
+		case PUT:
+			msg = "Book with id "+ id + " updated";break;
+		default:
+			msg = "";
+		}
+		BookRegistry br = new BookRegistry(msg, LocalDate.now());
+		this.addRegistry(br);
 	}
 }

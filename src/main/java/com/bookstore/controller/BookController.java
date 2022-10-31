@@ -2,7 +2,6 @@ package com.bookstore.controller;
 
 
 import com.bookstore.model.Book;
-import com.bookstore.model.BookRegistry;
 import com.bookstore.model.Editorial;
 import com.bookstore.response.BookResponse;
 import com.bookstore.service.BookRegistryService;
@@ -10,6 +9,7 @@ import com.bookstore.service.BookService;
 import com.bookstore.service.EditorialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,21 +57,26 @@ public class BookController {
 
 	@PostMapping("")
 	public ResponseEntity<BookResponse> addBook(@RequestBody Book book){
-		//BookRegistry registry = new BookRegistry(null, "New book added", LocalDate.now());
-		//this.registryService.addRegistry(registry);
 		BookResponse newBook = bookService.addNewBook(book);
+		//BookRegistry registry = new BookRegistry(null, "New book added with id "+newBook.getId(), LocalDate.now());
+		//this.registryService.addRegistry(registry);
+		this.registryService.addRegistry(HttpMethod.POST, newBook.getId());
 		return new ResponseEntity<BookResponse>(newBook, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<BookResponse> updateBook(@PathVariable long id, @RequestBody Book book){
 		BookResponse updatedBook = bookService.updateBookById(id, book);
+		
+		this.registryService.addRegistry(HttpMethod.PUT, updatedBook.getId());
+		
 		return new ResponseEntity<BookResponse>(updatedBook, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
 	public String deleteBook(@PathVariable long id){
 		bookService.deleteBookById(id);
+		this.registryService.addRegistry(HttpMethod.DELETE, id);
 		return "Book deleted sucessfully";
 	}
 
