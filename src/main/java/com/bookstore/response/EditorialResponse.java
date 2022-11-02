@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 @Data
-public class EditorialResponse extends RepresentationModel<EditorialResponse>{
+public class EditorialResponse extends RepresentationModel<EditorialResponse> implements Serializable{
 
 	@JsonProperty("Editorial_Id")
 	private long id;

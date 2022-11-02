@@ -93,13 +93,7 @@ public class BookController {
 
 	@GetMapping("/searchbyeditorialid/{id}")
 	public ResponseEntity<List<BookResponse>> getBookByEditorial(@PathVariable int id){
-		Optional<Editorial> opt = editorialService.getEditorialById(id);
-		if(opt.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		
-		Editorial editorial = opt.get();
-		List<BookResponse> bookList = bookService.getBookByEditorial(editorial);
+		List<BookResponse> bookList = bookService.getBookByEditorial(id);
 		if(bookList == null || bookList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}

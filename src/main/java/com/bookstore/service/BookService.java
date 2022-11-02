@@ -8,6 +8,11 @@ import com.bookstore.repository.IEditorialRepository;
 import com.bookstore.response.BookResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,10 +26,11 @@ public class BookService {
 	IBookRepository iBookRepository;
 
 	@Autowired
-	IEditorialRepository iditorialRepository;
+	IEditorialRepository editorialRepository;
 	
-	
+	@Cacheable("books")
 	public List<BookResponse> getAllBooks(){
+		System.out.println("Primera vez");
 		List<Book> books = iBookRepository.findAll();
 		List<BookResponse> bookResponses = new ArrayList<>();
 		books.stream().forEach(book -> {
@@ -32,7 +38,8 @@ public class BookService {
 		});
 		return bookResponses;
 	}
-
+	
+	@Cacheable(value = "books", key = "#id")
 	public Optional<BookResponse> getBookById(long id){
 		Optional<Book> book = iBookRepository.findById(id);
 		if(book.isPresent()){
@@ -40,7 +47,8 @@ public class BookService {
 		}
 		return Optional.empty();
 	}
-
+	
+	@Cacheable("books")
 	public List<BookResponse> getBookByTitle(String title){
 		List<Book> books = iBookRepository.findBookByTitle(title);
 		List<BookResponse> bookResponses = new ArrayList<>();
@@ -49,8 +57,14 @@ public class BookService {
 		});
 		return bookResponses;
 	}
-
-	public List<BookResponse> getBookByEditorial(Editorial editorial){
+	
+	@Cacheable("books")
+	public List<BookResponse> getBookByEditorial(long editorialId){
+		Optional<Editorial> opt = editorialRepository.findById(editorialId);
+		if(opt.isEmpty()) {
+			return null;
+		}
+		Editorial editorial = opt.get();
 		List<Book> books = iBookRepository.findBookByEditorial(editorial);
 		List<BookResponse> bookResponses = new ArrayList<>();
 		books.stream().forEach(book -> {
@@ -58,11 +72,13 @@ public class BookService {
 		});
 		return bookResponses;
 	}
-
+	
+	@CacheEvict(value = "books", allEntries = true)
 	public BookResponse addNewBook(Book book){
 		return new BookResponse(iBookRepository.save(book));
 	}
 
+	@CacheEvict(value = "books", allEntries = true)
 	public BookResponse updateBookById(long id,Book book){
 		Optional<Book> bookOptional = iBookRepository.findById(id);
 		if(bookOptional.isPresent()){
@@ -78,7 +94,8 @@ public class BookService {
 		return null;
 
 	}
-
+	
+	@CacheEvict(value = "books", allEntries = true)
 	public void deleteBookById(long id){
 		iBookRepository.deleteById(id);
 	}
