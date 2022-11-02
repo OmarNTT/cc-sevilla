@@ -11,12 +11,13 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
 
 @Getter @Setter @Data
-public class BookResponse extends RepresentationModel<BookResponse> {
+public class BookResponse extends RepresentationModel<BookResponse> implements Serializable {
 
     @JsonProperty("Book_Id")
     private long id;

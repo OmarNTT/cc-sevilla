@@ -1,4 +1,9 @@
 spring:
+  cache:
+    type: redis
+  redis:
+    port: 6379
+    host: localhost
   mongodb:
     embedded:
       version: 4.0.21

@@ -5,10 +5,11 @@ import com.bookstore.model.BookRegistry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class BookRegistryResponse {
+public class BookRegistryResponse implements Serializable {
 
     @JsonProperty("BookRegistry_Id")
     private String _id;

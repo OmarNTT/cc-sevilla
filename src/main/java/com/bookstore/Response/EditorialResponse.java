@@ -12,11 +12,12 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter @Setter @Data
-public class EditorialResponse extends RepresentationModel<EditorialResponse> {
+public class EditorialResponse extends RepresentationModel<EditorialResponse> implements Serializable {
 
     @JsonProperty("Editorial_Id")
     private long id;

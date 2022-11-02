@@ -10,13 +10,13 @@ import com.bookstore.service.implemented.BookRegistryService;
 import com.bookstore.service.implemented.BookService;
 import com.bookstore.service.implemented.EditorialService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -157,7 +157,6 @@ public class BookController {
         EditorialResponse e = book.getEditorialResponse();
     }
 
-
     public List<BookResponse> addLinksToBookList(List<BookResponse> books){
         for(BookResponse book: books) {
             this.addLinksToBook(book);
@@ -170,7 +169,5 @@ public class BookController {
         BookRegistry bookRegistry = new BookRegistry(message, fetchedDate);
         bookRegistryService.postBookRegistry(bookRegistry);
     }
-
-
 
 }
