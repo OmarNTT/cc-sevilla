@@ -42,13 +42,14 @@ public class EditorialResponse extends RepresentationModel<EditorialResponse> {
         this.name = name;
     }
 
-
     @Override
     @JsonProperty("links")
     @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     public Links getLinks() {
         return super.getLinks();
     }
+
+    
 }
 
 

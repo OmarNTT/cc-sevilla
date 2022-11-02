@@ -16,8 +16,8 @@ public class BookstoreApplication {
 
     CommandLineRunner runner(KafkaTemplate<String,String> kafkaTemplate){
         return args -> {
-            kafkaTemplate.send("bookstore","Hello World");
+            kafkaTemplate.send("bookstore_registry","Hello World");
         };
-    }
+    };
 
 }

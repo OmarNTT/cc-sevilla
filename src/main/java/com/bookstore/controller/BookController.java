@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -30,8 +29,9 @@ public class BookController {
     public final String Topic = "bookstore_registry";
 
     @Autowired
+    private BookRegistryService bookRegistryService;
+    @Autowired
     private BookService bookService;
-
     @Autowired
     private EditorialService editorialService;
     @Autowired
@@ -168,13 +168,12 @@ public class BookController {
         return books;
     }
 
-    /*
+
     public void Logger(String message){
         Date fetchedDate = new Date();
         BookRegistry bookRegistry = new BookRegistry(message, fetchedDate);
         bookRegistryService.postBookRegistry(bookRegistry);
     }
-    */
 
 
 }
