@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif;
+}
+
+body,
+html {
+  padding: 2rem;
+  background-color: #111827;
+  color: #fff;
+}
+
+h1 {
+  font-family: "Abril Fatface", cursive;
+  font-weight: bold;
+  font-size: 3rem;
+  margin: 1rem 0;
+}
+
+.link {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+  border: 3px solid gray;
+  padding: 10px 1rem;
+  border-radius: 30px;
+  background-color: #4b546840;
+  transition: all 0.2s ease-in-out;
+}
+
+.link:nth-child(1) {
+  background-color: #37e9bd;
+  border: 3px solid rgb(0, 0, 0);
+  font-weight: bold;
+  color: black;
+}
+
+.link:hover {
+  box-shadow: 0 0 5px 0 #fff;
+}

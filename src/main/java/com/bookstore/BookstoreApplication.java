@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import com.bookstore.model.BookRegistry;
 import com.bookstore.repository.IBookRegistryRepository;
@@ -15,6 +16,7 @@ import com.bookstore.repository.IBookRegistryRepository;
 
 @SpringBootApplication
 @EnableCaching
+@EnableWebSecurity
 //@EnableMongoRepositories(basePackageClasses = IBookRegistryRepository.class)
 public class BookstoreApplication implements CommandLineRunner{
 

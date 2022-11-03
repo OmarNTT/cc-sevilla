@@ -79,6 +79,7 @@ public class BookService {
 	}
 
 	@CacheEvict(value = "books", allEntries = true)
+	//@CachePut(value = "books", key = "#id")
 	public BookResponse updateBookById(long id,Book book){
 		Optional<Book> bookOptional = iBookRepository.findById(id);
 		if(bookOptional.isPresent()){
