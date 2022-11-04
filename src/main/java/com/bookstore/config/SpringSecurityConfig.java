@@ -12,45 +12,41 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
+	
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
 		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http
-			.csrf().disable()
-			.authorizeRequests()
-			.antMatchers(HttpMethod.GET,"/bookstore/**")
-			.hasAnyRole("ADMIN","USER")
-			.antMatchers(HttpMethod.POST,"/bookstore/**")
-			.hasRole("ADMIN")
-			.antMatchers(HttpMethod.PUT,"/bookstore/**")
-			.hasRole("ADMIN")
-			.antMatchers(HttpMethod.DELETE,"/bookstore/**")
-			.hasRole("ADMIN")
-			.anyRequest()
-			.authenticated()
-			.and()
-			.httpBasic();
-
-		/*http.authorizeRequests()
-		.antMatchers("/bookstore/book/**")
+		http.csrf().disable()
+		.authorizeRequests().antMatchers("/swagger-ui/**").permitAll()
+		.antMatchers(HttpMethod.GET,"/bookstore/**")
+		.hasAnyRole("ADMIN","USER")
+		.antMatchers(HttpMethod.POST,"/bookstore/**")
+		.hasRole("ADMIN")
+		.antMatchers(HttpMethod.PUT,"/bookstore/**")
+		.hasRole("ADMIN")
+		.antMatchers(HttpMethod.DELETE,"/bookstore/**")
 		.hasRole("ADMIN")
 		.anyRequest()
 		.authenticated()
 		.and()
-		.httpBasic();*/
+		.httpBasic();
 	}
 
 	@Bean
 	public static NoOpPasswordEncoder passwordEncoder() {
 		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
 	}
-
-
+	
+	/*@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}*/
 }
